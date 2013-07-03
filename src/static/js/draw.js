@@ -646,7 +646,11 @@ socket.on('user:disconnect', function (user_count) {
 socket.on('project:load', function (json) {
   paper.project.activeLayer.remove();
   paper.project.importJSON(json.project);
-  $('#mycolorpicker').pep({disableSelect:false, constrainToParent:"body"});
+  $('#mycolorpicker').pep({
+    disableSelect:false, 
+    constrainToParent:"body",
+    handle: ".pep-handle"
+  });
   view.draw();
 });
 
