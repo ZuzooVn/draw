@@ -179,9 +179,10 @@ function subscribe(socket, data) {
     loadFromMemory(room, socket);
   }
 
-  // Broadcast to room the new user count -- currently broken
-  var rooms = socket.adapter.rooms[room]; 
-  var roomUserCount = Object.keys(rooms).length;
+  // Broadcast to room the new user count
+  var roomUserCount = socket.adapter.rooms[room];
+  roomUserCount = Object.keys(roomUserCount).length;
+  console.log("room count", roomUserCount);
   io.to(room).emit('user:connect', roomUserCount);
 }
 
