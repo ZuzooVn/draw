@@ -38,6 +38,16 @@
         <script src='/static/js/lib/webtoolkit.base64.js'></script>
         <script src='/static/js/lib/farbtastic.js'></script>
 	<script src='/static/js/lib/jquery.pep.min.js'></script>
+
+        <!-- Required for PDF Export -->
+        <script src='/static/js/lib/jspdf.js'></script>
+        <script src='/static/js/lib/addimage.js'></script>
+        <script src='/static/js/lib/png.js'></script>
+        <script src='/static/js/lib/zlib.js'></script>
+        <script src='/static/js/lib/png_support.js'></script>
+        <script src='/static/js/lib/FileSaver.js'></script>
+
+
         <script src='/static/js/draw.js' type="text/paperscript" canvas="myCanvas"></script>
         <script>document.domain = document.domain;</script>
     </head>
@@ -164,6 +174,7 @@
                 <h2 data-l10n-id="draw.importExport.export"></h2>
                 <div><a id="exportSVG" target="_blank" class="exportlink">Export SVG</a></div>
                 <div><a id="exportPNG" target="_blank" class="exportlink">Export PNG</a></div>
+                <div><a id="exportPDF" target="_blank" class="exportlink">Export PDF</a></div>
             </div>
         </div>
 

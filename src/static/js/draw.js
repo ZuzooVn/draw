@@ -516,6 +516,9 @@ $('#exportSVG').on('click', function() {
 $('#exportPNG').on('click', function() {
   exportPNG();
 });
+$('#exportPDF').on('click', function() {
+  exportPDF();
+});
 
 $('#pencilTool').on('click', function() {
   $('#editbar > ul > li > a').css({background:""}); // remove the backgrounds from other buttons
@@ -616,6 +619,32 @@ function exportPNG() {
   }
   
 }
+
+// Encodes png as a base64 text and opens a new browser window
+// to the png image that can be saved as a .png on the users
+// local filesystem. This skips making a round trip to the server
+// for a POST.
+function exportPDF() {
+  var canvas = document.getElementById('myCanvas');
+  var imgData = canvas.toDataURL('image/png');
+  var pdf = new jsPDF();
+console.log(imgData);
+  pdf.addImage(imgData, 'JPEG', 10, 10);
+
+  pdf.output('dataurlnewwindow');   //for display image in new window
+
+
+//            var output = pdf.output();
+//            return   btoa( output);    //save data on disk
+//  var string = pdf.output('datauristring');
+//  var x = window.open();
+//  x.document.open();
+//  x.document.location=string;
+//  doc.saveAs("e.pdf");
+//  doc.save();
+// doc.output('save', 'filename.pdf'); //Try to save PDF as a file (not works on ie before 10, and some mobile devices)
+}
+
 
 // User selects an image from the file browser to upload
 $('#imageInput').bind('change', function(e) {
