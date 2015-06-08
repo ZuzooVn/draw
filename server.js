@@ -69,6 +69,11 @@ app.get('/', function(req, res){
   res.sendfile(__dirname + '/src/static/html/index.html');
 });
 
+// Drawings Timeslider
+app.get('/d/*/timeslider', function(req, res){
+  res.sendfile(__dirname + '/src/static/html/timeslider.html');
+});
+
 // Drawings
 app.get('/d/*', function(req, res){
   res.sendfile(__dirname + '/src/static/html/draw.html');

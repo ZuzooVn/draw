@@ -3,6 +3,8 @@
 tool.minDistance = 10;
 tool.maxDistance = 45;
 
+var drawingJSON;
+
 var room = window.location.pathname.split("/")[2];
 
 function pickColor(color) {
@@ -139,7 +141,9 @@ if (authorColor != "" && authorColor.substr(0, 4) == "rgb(") {
 }
 update_active_color();
 
-
+$('#timesliderPlay').on('click', function() {
+  timesliderPlay();
+});
 
 $('#colorToggle').on('click', function() {
   $('#mycolorpicker').toggle();
@@ -704,6 +708,7 @@ socket.on('user:disconnect', function(user_count) {
 });
 
 socket.on('project:load', function(json) {
+  drawingJSON = json;
   console.log("project:load");
   paper.project.activeLayer.remove();
   paper.project.importJSON(json.project);
@@ -871,4 +876,43 @@ function saveDrawing(){
   var canvas = document.getElementById('myCanvas');
   // Save image to localStorage
   localStorage.setItem("drawingPNG"+room, canvas.toDataURL('image/png'));
+}
+
+// Control playing back a drawing
+function timesliderPlay(){
+  console.warn("showing some good shit");
+  // clear the canvas
+  clearCanvas();
+  // console.log("orig drawingJSON project", drawingJSON.project);
+  // console.log("orig drawingJSON project length", drawingJSON.project.length);
+
+  var state = JSON.parse(drawingJSON.project);
+  var newState = [];
+  var tsDrawingJSON = {};
+
+  var shapes = state[0][1].children;
+
+  // For each shape
+  $(shapes).each(function(k, shape){
+    setTimeout(function(){ 
+      newState.push(shape); // add shape to state
+      // console.log("shape", shape);
+      drawingJSONProject = JSON.parse(drawingJSON.project);
+      drawingJSONProject[0][1].children = newState;
+      drawingJSONProject = JSON.stringify(drawingJSONProject);
+
+      // console.log("orig", drawingJSON.project);
+      // console.log("new", drawingJSONProject);
+      tsDrawingJSON.project = drawingJSONProject;
+      // console.log("new drawingJSON project", drawingJSON.project);
+      // console.log("new drawingJSON project length", drawingJSON.project.length);
+ 
+      paper.project.importJSON(tsDrawingJSON.project);
+      view.draw();
+
+    }, k*500);
+    
+  });
+  
+  // add the item to the page
 }
