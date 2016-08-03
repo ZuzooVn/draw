@@ -1,0 +1,27 @@
+{
+  "name": "edulink",
+  "description": "",
+  "main": "",
+  "authors": [
+    "AselaDarshan <aseladarshan@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/buddhikajay/draw",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.0",
+    "kurento-utils": "^6.5.0",
+    "adapter.js": "0.2.9",
+    "draggabilly": "~1.2.4",
+    "demo-console": "1.5.1",
+    "ekko-lightbox": "~3.3.0"
+  }
+}

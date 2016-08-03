@@ -497,7 +497,7 @@ function showSpinner() {
 function hideSpinner() {
 	for (var i = 0; i < arguments.length; i++) {
 		arguments[i].src = '';
-		arguments[i].poster = 'bundles/app/images/profile-default.png';
+		//arguments[i].poster = 'bundles/app/images/profile-default.png';
 		arguments[i].style.background = '';
 	}
 }

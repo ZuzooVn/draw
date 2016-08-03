@@ -2,9 +2,9 @@
 
 {% block title %}{% endblock %}
 {% block stylesheets %}
-<link rel="stylesheet" href="assets/vendor/ekko-lightbox/dist/ekko-lightbox.min.css">
+<!--<link rel="stylesheet" href="assets/vendor/ekko-lightbox/dist/ekko-lightbox.min.css">-->
 <link rel="stylesheet" href="/media_server_assets/css/kurento.css">
-
+<script src="/bower_components/adapter.js/adapter.js"></script>
 <script src="/bower_components/kurento-utils/js/kurento-utils.js"></script>
 <script src="/media_server_assets/js/webRTC.js"> </script>
 {% endblock stylesheets %}
@@ -18,7 +18,7 @@
 
         <div id="videoBig">
 
-            <video src="" id="videoOutput" autoplay="" poster="bundles/app/images/profile-default.png" height="150px" width="200px"></video>
+            <video src="" id="videoOutput" autoplay="" poster="" height="150px" width="200px"></video>
 
         </div>
 
@@ -26,7 +26,7 @@
 
     <div class="col-md-4 col-sm-4" >
         <div class="-circle" id="videoSmall ">
-            <video src="" id="videoInput" autoplay="" poster="bundles/app/images/profile-default.png" height="37px" width="50px"></video>
+            <video src="" id="videoInput" autoplay="" poster="" height="37px" width="50px"></video>
         </div>
 
     </div>
@@ -55,7 +55,7 @@
 //    else {//user is a teacher
 //        load(currentUser,studentUsername,sessionID);
 //    }
-    load(1,4,1);//webRTC register
+    load('1','4','1');//webRTC register
 
     function setPartnerStatus($status){
         switch ($status){
@@ -136,8 +136,9 @@
     }
     function enableVideo(){
 //        {% if is_granted('ROLE_TEACHER') %}
-        call();//webRTC call
+//        call();//webRTC call
 //        {% endif %}
+        call();
         $('#videoControl').html("pause");
         videoOn = true;
     }
