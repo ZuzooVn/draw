@@ -6,5 +6,5 @@ npm-debug.log
 src/static/bower_components
 src/static/vendor
 user_files/*
-application/edulink/node_modules
-application/edulink/public/bower_components
+application/edulink/node_modules/*
+application/edulink/public/bower_components/*
