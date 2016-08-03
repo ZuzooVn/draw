@@ -32,6 +32,12 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/classroom', classroom);
 
+app.use("/wb_assets/static", express.static(__dirname + '/../../src/static'));
+//console.log('dirname '+__dirname+'/../../src');
+app.use("/build", express.static(__dirname + '/../../src/static/pdfjs/build'));
+app.use("/web", express.static(__dirname + '/../../src/static/pdfjs/web'));
+app.use("/files", express.static(__dirname + '/../../user_files'));
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
