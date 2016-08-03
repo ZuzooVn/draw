@@ -1014,12 +1014,26 @@ $('#documentLoadTool').on('click', function () {
             //this background color for body tag will make conflicts with whiteboard
             body.css('background-color', '#404040');
         }
-        //if there is a previousely selected document
-        //send 'null' as the file name. This would make sure that the pdf viewer will not reload the document again
-        //frontend code also defined in this file.
-        socket.emit('pdf:load', room, uid, null);
+        socket.emit('pdf:load', room, uid, DEFAULT_URL);
     }
 });
+
+//To write on pdf document
+$('#documentEditTool').on('click',function(){
+    writeOnPdfDocument();
+    socket.emit('pdf:edit', room, uid);
+});
+
+function writeOnPdfDocument(){
+    if($('#documentViewer').css('z-index')>-1){
+        $('#documentViewer').css('z-index',-1);
+        console.log('now you can write on pdf');
+    }
+    else {
+        $('#documentViewer').css('z-index',1);
+        console.log('you can go to next page of pdf');
+    }
+}
 
 $('#documentRemoveTool').on('click', function(){
     hideDocumentViewer();
@@ -1332,9 +1346,9 @@ socket.on('pointing:end', function (artist, position) {
 
 socket.on('pdf:load', function (artist, file) {
     if (artist != uid) {
-        //if 'file' is null, that means the pdf file was previousely loaded. No need to reload. Just show the viewer
-        if(file == null){
-            console.log('A file has been already open');
+
+        if(file == DEFAULT_URL){
+            console.log('Same file has been already open');
         }
         else {
             DEFAULT_URL = file;
@@ -1351,6 +1365,15 @@ socket.on('pdf:load', function (artist, file) {
         //    documentViewer.css('visibility', 'hidden');
         //    body.css('background-color', '');
         //}
+    }
+});
+
+//write on pdf document
+
+socket.on('pdf:edit', function(artist){
+    if(artist != uid){
+        console.log('write on pdf');
+        writeOnPdfDocument();
     }
 });
 
@@ -1373,7 +1396,29 @@ socket.on('pdf:previousPage', function (artist) {
     }
 });
 
+socket.on('pdf:presentationMode', function (artist) {
+    if(artist != uid){
+        console.log('entering presentation mode');
+        //PDFViewerApplication.requestPresentationMode();
+        var elem = $('documentViewer'); // Make the body go full screen.
+        requestFullScreen(elem);
+        $('body').addClass("sidebar-collapse");
+    }
+});
 
+function requestFullScreen(element) {
+    // Supports most browsers and their versions.
+    var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullscreen;
+
+    if (requestMethod) { // Native full screen.
+        requestMethod.call(element);
+    } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+        var wscript = new ActiveXObject("WScript.Shell");
+        if (wscript !== null) {
+            wscript.SendKeys("{F11}");
+        }
+    }
+}
 
 // --------------------------------- 
 // SOCKET.IO EVENT FUNCTIONS
