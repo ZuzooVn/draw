@@ -1,0 +1,174 @@
+{% extends 'layout.html' %}
+
+{% block title %}{% endblock %}
+{% block stylesheets %}
+<!--<link rel="stylesheet" href="assets/vendor/ekko-lightbox/dist/ekko-lightbox.min.css">-->
+<link rel="stylesheet" href="/media_server_assets/css/kurento.css">
+<script src="/bower_components/adapter.js/adapter.js"></script>
+<script src="/bower_components/kurento-utils/js/kurento-utils.js"></script>
+<script src="/media_server_assets/js/webRTC.js"> </script>
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <label class="col-md-offset-8 col-sm-offset-8 pull-right label label-danger" id="status" >offline</label>
+
+
+        <div id="videoBig">
+
+            <video src="" id="videoOutput" autoplay="" poster="" height="150px" width="200px"></video>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4 col-sm-4" >
+        <div class="-circle" id="videoSmall ">
+            <video src="" id="videoInput" autoplay="" poster="" height="37px" width="50px"></video>
+        </div>
+
+    </div>
+</div>
+<div id = "callButtonContainer" class="col-md-offset-4 col-sm-offset-4" >
+    <button id="call" class="btn btn-xs btn-warning text-white" style="background: transparent" onclick="toggleVideoState()">
+       play <!--<i id="videoControl" class="material-icons">play_arrow</i>-->
+    </button>
+
+</div>
+
+<script>
+    var classStarted = false;
+    var classStopped = false;
+    var videoOn = false;
+//    $('#call').prop('disabled', true);
+//    $('#classControl').prop('disabled',true);
+
+//    $('#callButtonContainer').hide();
+//    {% if is_granted('ROLE_STUDENT') %}
+//    $('#classControlContainer').hide();
+//    {% endif %}
+//    if(currentUserId==sID){//user is a student
+//        load(currentUser,teacherUsername,sessionID);//webRTC register
+//    }
+//    else {//user is a teacher
+//        load(currentUser,studentUsername,sessionID);
+//    }
+
+    load('1','4','1');//webRTC register
+
+    function setPartnerStatus($status){
+        switch ($status){
+            case 'online':
+                $('#status').html("online");
+                $('#status').removeClass("label-danger");
+                $('#status').addClass("label-success");
+                $('#call').prop('disabled', false);
+                $('#classControl').prop('disabled', false);
+                break;
+            case 'offline':
+                $('#status').html("offline");
+                $('#status').addClass("label-danger");
+                $('#status').removeClass("label-success");
+//                $('#call').prop('disabled', true);
+//                $('#classControl').prop('disabled',true);
+                break;
+            case 'ready':
+                $('#status').html("ready");
+                $('#status').removeClass("label-danger");
+                $('#status').addClass("label-success");
+                $('#call').prop('disabled', false);
+                break;
+        }
+    }
+    function startClass(){
+        enableVideo();
+        $('#callButtonContainer').show();
+
+//        {% if is_granted('ROLE_STUDENT') %}
+//
+//        $('#classControlContainer').show();
+//        //inform backend
+//        $.post('{{path('start_session')}}',
+//        {sessionId:sessionID},
+//                function (response) {
+//                    //check response
+//                }, "json");
+//
+//        {% endif %}
+        $('#classControl').addClass("label-danger");
+        $('#classControl').removeClass("label-success");
+        $('#classControl').html("Stop Class");
+        classStarted = true;
+    }
+    function stopClass(){
+        if(!classStopped) {
+
+            classStopped = true;
+
+            disableVideo();
+            var nextSessionStart;
+//            $.post('{{ path('end_session') }}',
+//            {sessionId: sessionID},
+//                    function (response) {
+//                        nextSessionStart = response.nextSession;
+//
+//                    }, "json");
+//            //classStarted = false;
+//
+//            sendStopClassMessage();
+//            $.post('{{ path('get_rating_form') }}',
+//            {sessionId: sessionID},
+//                    function (response) {
+//                        $('#form').html(response.form);
+//                        $('#myModal').modal('show');
+//
+//                    }, "json");
+//            {% if is_granted('ROLE_STUDENT') %}
+//            //inform backend
+//            {% else %}
+//
+//            {% endif %}
+
+
+        }
+
+    }
+    function enableVideo(){
+//        {% if is_granted('ROLE_TEACHER') %}
+//        call();//webRTC call
+//        {% endif %}
+        call();
+        $('#videoControl').html("pause");
+        videoOn = true;
+    }
+    function disableVideo(){
+//        {% if is_granted('ROLE_TEACHER') %}
+        $('#videoControl').html("play_arrow");
+//        {% else %}
+//        $('#callButtonContainer').hide();
+//        {% endif %}
+        stop();
+        videoOn = false;
+    }
+    function toggleClassState(){
+        if(!classStarted){
+            startClass();
+        }
+        else{
+
+            stopClass();
+        }
+    }
+    function toggleVideoState(){
+        if(! videoOn) {
+            enableVideo();
+        }
+        else{
+            disableVideo();
+        }
+    }
+</script>
+
+{% endblock content %}
