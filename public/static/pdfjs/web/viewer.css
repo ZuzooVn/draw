@@ -443,7 +443,7 @@ html[dir='rtl'] #sidebarContent {
   /*following part was added to remove scroll bar of pdfjs viewer*/
   height: 85%;
   width: 100%;
-  overflow: hidden;
+  overflow: auto;
 
   /*following part was commented to remove scroll bar*/
   /*overflow: auto;*/

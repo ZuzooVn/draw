@@ -6,7 +6,7 @@ var fs = require('fs'),
     path = require('path');
 
 exports.processPath = function(req, res){
-
+    console.log("process path");
     var pathToProcess;
     console.log(__dirname);
     console.log(req.query.id);
@@ -21,6 +21,7 @@ exports.processPath = function(req, res){
 };
 
 function processRequest(pathToProcess, res) {
+    console.log("process path request");
     var resp = [];
     fs.readdir(pathToProcess, function(err, list) {
         if(err){

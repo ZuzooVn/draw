@@ -18,7 +18,7 @@ $(function() {
     $('#container').jstree({
         'core' : {
             'data' : {
-                "url" : "https://"+location.host+"/tree/",
+                "url" : location.protocol+"//"+location.host+"/tree/",
                 //"url" : "http://"+location.host+"/tree/",
                 "data" : function (node) {
                     return { "id" : node.id };

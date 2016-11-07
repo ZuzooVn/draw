@@ -234,7 +234,37 @@ var currentRatio = 1;
 var previousRatio = 1;
 var selectToolMode = "ITEM_DRAG";
 
+// initialize the pdf-whiteboard-toggle
+$("[name='pdf-whiteboard-checkbox']").bootstrapSwitch();
+
+//toggle pdf
+$('input[name="pdf-whiteboard-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
+        alert(state);
+        if(!state) {
+            hideDocumentViewer();
+        }
+        else
+            showDocumentViewer();
+
+});
+function showDocumentViewer(){
+
+    $('#myCanvas').css({'z-index':'0','top':'32px'});// pull down the canvas so that we can still use pdfjs control buttons while editing on top of pdf
+    var documentViewer = $('#documentViewer');
+    var body = $('body');
+    if (documentViewer.css('visibility') == 'hidden') {
+        documentViewer.css('visibility', 'visible');
+        body.css('background-color', '#404040');
+    }
+    //else {
+    //    documentViewer.css('visibility', 'hidden');
+    //    body.css('background-color', '');
+    //}
+    IsPDFOn = true;
+}
+
 function onMouseDown(event) {
+
     if (event.which === 2) return; // If it's middle mouse button do nothing -- This will be reserved for panning in the future.
     $('.popup').fadeOut();
 
