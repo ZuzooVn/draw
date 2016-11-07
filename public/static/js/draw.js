@@ -239,7 +239,7 @@ $("[name='pdf-whiteboard-checkbox']").bootstrapSwitch();
 
 //toggle pdf
 $('input[name="pdf-whiteboard-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-        alert(state);
+
         if(!state) {
             hideDocumentViewer();
         }
