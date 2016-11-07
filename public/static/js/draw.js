@@ -3,7 +3,7 @@
 tool.minDistance = 1;
 tool.maxDistance = 45;
 
-room = window.location.pathname.split("/")[2];//get classromm id
+room = window.location.pathname.split("/")[2];//get classroom id
 var redoStack = new Array(); // stack to store undo items
 var canvasClearedCount = 0; // keep track of number of times the canvas cleared, so we can override the correct previous page at db
 var maximumPreviousPageCount = 5;
