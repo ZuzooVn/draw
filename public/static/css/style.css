@@ -455,7 +455,9 @@ body {
 .buttonicon-showusers {
     background-position: 0px -183px;
 }
-
+.buttonicon-clear {
+    background-image: url('../../static/img/close.png');
+}
 #online_count {
     color: #888;
 }

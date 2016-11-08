@@ -240,7 +240,7 @@ $("[name='pdf-whiteboard-checkbox']").bootstrapSwitch();
 //toggle pdf
 $('input[name="pdf-whiteboard-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
 
-        if(!state) {
+        if(state) {
             hideDocumentViewer();
         }
         else
@@ -261,6 +261,7 @@ function showDocumentViewer(){
     //    body.css('background-color', '');
     //}
     IsPDFOn = true;
+    writeOnPdfDocument();//enable wirte
 }
 
 function onMouseDown(event) {
@@ -1072,7 +1073,18 @@ $('#toolbarViewerLeft .toolbarButton.pageUp').click(function(){
         clearCanvas();
     }
 });
-
+//clear canvas tool
+$('#clearTool').on('click', function () {
+    //alert("clear");
+    removeStylingFromTools();
+    $('#clearTool').css({
+        border: "1px solid orange"
+    }); // set the selected tool css to show it as active
+    //activeTool = "none";
+    // clear();
+    clearCanvas();
+    //socket.emit('clear', room, uid, currentPageNumber);
+});
 function writeOnPdfDocument(){
     if($('#myCanvas').css('z-index') <= 0){
         $('#myCanvas').css('z-index',2);

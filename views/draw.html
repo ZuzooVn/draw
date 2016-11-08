@@ -76,7 +76,7 @@
     <div class="row">
         <div class="col-md-2 col-sm-2 col-xs-2 tool">
             <!--pdf toggle -->
-        <input type="checkbox" name="pdf-whiteboard-checkbox" checked data-on-color="success" data-off-color="danger" data-on-text="NOTE" data-off-text="PDF">
+        <input type="checkbox" name="pdf-whiteboard-checkbox" checked data-on-color="success" data-off-color="warning" data-on-text="PDF" data-off-text="NOTE">
         </div>
             <!-- paint brush/ pencil / eraser / hand tool -->
         <div class="col-md-1 col-sm-1 col-xs-1 tool">
@@ -137,31 +137,31 @@
         </div>
 
         <!--Pdf Viewer-->
-        <div class="col-md-1 col-sm-1 col-xs-1 tool">
-            <div class="dropup">
-                <button class="btn dropdown-toggle buttonicon buttonicon-pdf-tools" type="button" data-toggle="dropdown" title="PDF File Operations"></button>
-                <ul class="dropdown-menu compound-box">
-                    <li id="documentLoadTool" >
-                        <a class="grouped-right"
-                           data-l10n-id="draw.toolbar.import_export.title" title="Load PDF">
-                            <span class="buttonicon buttonicon-load-pdf"></span>
-                        </a>
-                    </li>
-                    <li id="documentRemoveTool" >
-                        <a class="grouped-right"
-                           data-l10n-id="draw.toolbar.import_export.title" title="Remove PDF">
-                            <span class="buttonicon buttonicon-remove-pdf"></span>
-                        </a>
-                    </li>
-                    <li id="documentEditTool" >
-                        <a class="grouped-right"
-                           data-l10n-id="draw.toolbar.import_export.title" title="Edit PDF">
-                            <span class="buttonicon buttonicon-edit-pdf"></span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <!--<div class="col-md-1 col-sm-1 col-xs-1 tool">-->
+            <!--<div class="dropup">-->
+                <!--<button class="btn dropdown-toggle buttonicon buttonicon-pdf-tools" type="button" data-toggle="dropdown" title="PDF File Operations"></button>-->
+                <!--<ul class="dropdown-menu compound-box">-->
+                    <!--<li id="documentLoadTool" >-->
+                        <!--<a class="grouped-right"-->
+                           <!--data-l10n-id="draw.toolbar.import_export.title" title="Load PDF">-->
+                            <!--<span class="buttonicon buttonicon-load-pdf"></span>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li id="documentRemoveTool" >-->
+                        <!--<a class="grouped-right"-->
+                           <!--data-l10n-id="draw.toolbar.import_export.title" title="Remove PDF">-->
+                            <!--<span class="buttonicon buttonicon-remove-pdf"></span>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                    <!--<li id="documentEditTool" >-->
+                        <!--<a class="grouped-right"-->
+                           <!--data-l10n-id="draw.toolbar.import_export.title" title="Edit PDF">-->
+                            <!--<span class="buttonicon buttonicon-edit-pdf"></span>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <!--Page Operations-->
         <div class="col-md-1 col-sm-1 col-xs-1 tool">
@@ -235,6 +235,14 @@
                 <span class="buttonicon buttonicon-redo disabled"></span>
             </a>
         </div>
+
+        <!--Clear Button-->
+        <div class="col-md-1 col-sm-1 col-xs-1 tool" id="clearTool">
+            <a class="grouped-middle" data-l10n-id="draw.toolbar.select.title" title="Clear Page">
+                <span class="buttonicon buttonicon-clear"></span>
+            </a>
+        </div>
+
     </div>
 </div>
 
