@@ -1504,11 +1504,9 @@ socket.on('pdf:pageChange', function (artist, page) {
 
 //!= is to avoid loop. Because we are listening to pdfjs zoom event to trigger zoom
 socket.on('pdf:zoom', function (artist, scale) {
-    if (artist != uid) {
+    if (artist != uid && PDFViewerApplication.pdfViewer.currentScaleValue != scale) {
         console.log('change zoom level to '+scale);
-        if(PDFViewerApplication.pdfViewer.currentScaleValue != scale){
             PDFViewerApplication.pdfViewer.currentScaleValue = scale;
-        }
 
     }
 });

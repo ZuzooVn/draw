@@ -134,11 +134,13 @@ $(function (){
 $(document).bind('pagechange', function (e) {
     console.log('Page changed .'+PDFViewerApplication.page);
     socket.emit('pdf:pageChange', room, uid, PDFViewerApplication.page);
-    //do stuff
 });
 
 $(document).bind('scalechange', function (e) {
     console.log('Scale Change .'+PDFViewerApplication.pdfViewer.currentScaleValue);
     socket.emit('pdf:zoom', room, uid, PDFViewerApplication.pdfViewer.currentScaleValue);
-    //do stuff
+});
+
+$(document).bind('updateviewarea', function (e) {
+    console.log('updateviewarea '+PDFViewerApplication.pdfViewer.scroll.down+' '+PDFViewerApplication.pdfViewer.scroll.lastY);
 });
