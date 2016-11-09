@@ -4,6 +4,11 @@ tool.minDistance = 1;
 tool.maxDistance = 45;
 
 room = window.location.pathname.split("/")[2];//get classroom id
+var role = window.location.pathname.split("/")[3];
+var TUTOR_ROLE = "tutor";
+if(!role){
+    role = TUTOR_ROLE;
+}
 var redoStack = new Array(); // stack to store undo items
 var canvasClearedCount = 0; // keep track of number of times the canvas cleared, so we can override the correct previous page at db
 var maximumPreviousPageCount = 5;
@@ -240,15 +245,15 @@ $("[name='pdf-whiteboard-checkbox']").bootstrapSwitch();
 //to sync scrolling pdf
 var prevPos=0;
 var scrollSyncThreshold = 50;//number of pixels scrolled to trigger sync
-var scrollSyncLock = false;//to avoid re scroll
+
 $('#viewerContainer').scroll(function(){
 
     var position = $('#viewerContainer').scrollTop();
-    if((!scrollSyncLock)&&((prevPos-position)>scrollSyncThreshold||(prevPos-position)<(-scrollSyncThreshold))) {
+    if((role==TUTOR_ROLE)&&((prevPos-position)>scrollSyncThreshold||(prevPos-position)<(-scrollSyncThreshold))) {
         socket.emit('pdf:scroll', room, uid, position);
         prevPos=position;
     }
-    scrollSyncLock=false;//if locked while scrolling by peer, unlock
+
 });
 //toggle pdf
 $('input[name="pdf-whiteboard-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
@@ -1450,7 +1455,7 @@ socket.on('pdf:load', function (artist, file) {
 });
 //scroll pdf
 socket.on('pdf:scroll', function (position) {
-    scrollSyncLock = true;
+
     document.getElementById('viewerContainer').scrollTop = position;
 
 
