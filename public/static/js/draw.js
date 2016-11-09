@@ -1493,7 +1493,8 @@ socket.on('pdf:hide', function(json){
 });
 
 socket.on('pdf:pageChange', function (artist, page) {
-    if (artist != uid && page < PDFViewerApplication.pagesCount && page>0) {
+    //!= is to avoid loop. Because we are listening to pdfjs zoom event to trigger page change
+    if (artist != uid && page < PDFViewerApplication.pagesCount && page>0 && PDFViewerApplication.pagesCount != page) {
         if(IsPDFOn && paper.project.activeLayer.hasChildren()){
             clearCanvas();
         }
@@ -1501,11 +1502,14 @@ socket.on('pdf:pageChange', function (artist, page) {
     }
 });
 
-
+//!= is to avoid loop. Because we are listening to pdfjs zoom event to trigger zoom
 socket.on('pdf:zoom', function (artist, scale) {
     if (artist != uid) {
         console.log('change zoom level to '+scale);
-        PDFViewerApplication.pdfViewer.currentScaleValue = scale;
+        if(PDFViewerApplication.pdfViewer.currentScaleValue != scale){
+            PDFViewerApplication.pdfViewer.currentScaleValue = scale;
+        }
+
     }
 });
 

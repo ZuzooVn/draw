@@ -91,34 +91,34 @@ $(function(){
 
 /* Go to next page of the loaded PDF file*/
 
-$(function(){
-    $('#toolbarViewerLeft .toolbarButton.pageDown').click(function(){
-        socket.emit('pdf:pageChange', room, uid, PDFViewerApplication.page+1);
-    });
-});
-
-/* Go to previous page of the loaded PDF file*/
-
-$(function(){
-    $('#toolbarViewerLeft .toolbarButton.pageUp').click(function(){
-        socket.emit('pdf:pageChange', room, uid, PDFViewerApplication.page-1);
-    });
-});
-
-/*Zoom In*/
-$(function(){
-    $('#zoomIn').click(function(){
-        console.log('zooming in from '+PDFViewerApplication.pdfViewer.currentScaleValue);
-        socket.emit('pdf:zoom', room, uid, PDFViewerApplication.pdfViewer.currentScaleValue+0.1);
-    });
-});
-
-/*Zoom Out*/
-$(function(){
-    $('#zoomOut').click(function(){
-        socket.emit('pdf:zoom', room, uid, PDFViewerApplication.pdfViewer.currentScaleValue-0.1);
-    });
-});
+// $(function(){
+//     $('#toolbarViewerLeft .toolbarButton.pageDown').click(function(){
+//         socket.emit('pdf:pageChange', room, uid, PDFViewerApplication.page+1);
+//     });
+// });
+//
+// /* Go to previous page of the loaded PDF file*/
+//
+// $(function(){
+//     $('#toolbarViewerLeft .toolbarButton.pageUp').click(function(){
+//         socket.emit('pdf:pageChange', room, uid, PDFViewerApplication.page-1);
+//     });
+// });
+//
+// /*Zoom In*/
+// $(function(){
+//     $('#zoomIn').click(function(){
+//         console.log('zooming in from '+PDFViewerApplication.pdfViewer.currentScaleValue);
+//         socket.emit('pdf:zoom', room, uid, PDFViewerApplication.pdfViewer.currentScaleValue+0.1);
+//     });
+// });
+//
+// /*Zoom Out*/
+// $(function(){
+//     $('#zoomOut').click(function(){
+//         socket.emit('pdf:zoom', room, uid, PDFViewerApplication.pdfViewer.currentScaleValue-0.1);
+//     });
+// });
 
 /*Presentation Mode*/
 $(function (){
@@ -127,3 +127,18 @@ $(function (){
         socket.emit('pdf:presentationMode', room, uid);
     });
 })
+
+
+
+//These events are emited in pdf js. Please refer viewer.js
+$(document).bind('pagechange', function (e) {
+    console.log('Page changed .'+PDFViewerApplication.page);
+    socket.emit('pdf:pageChange', room, uid, PDFViewerApplication.page);
+    //do stuff
+});
+
+$(document).bind('scalechange', function (e) {
+    console.log('Scale Change .'+PDFViewerApplication.pdfViewer.currentScaleValue);
+    socket.emit('pdf:zoom', room, uid, PDFViewerApplication.pdfViewer.currentScaleValue);
+    //do stuff
+});
