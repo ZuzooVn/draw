@@ -237,9 +237,21 @@ var selectToolMode = "ITEM_DRAG";
 // initialize the pdf-whiteboard-toggle
 $("[name='pdf-whiteboard-checkbox']").bootstrapSwitch();
 
+//to sync scrolling pdf
+var prevPos=0;
+var scrollSyncThreshold = 50;//number of pixels scrolled to trigger sync
+$('#viewerContainer').scroll(function(){
+
+    var position = $('#viewerContainer').scrollTop();
+    if((prevPos-position)>scrollSyncThreshold||(prevPos-position)<(-scrollSyncThreshold)) {
+        socket.emit('pdf:scroll', room, uid, position);
+        prevPos=position;
+    }
+});
 //toggle pdf
 $('input[name="pdf-whiteboard-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-        socket.emit('pdf', room, uid, state);
+        socket.emit('pdf:toggle', room, uid, state);
+
         if(state) {
 
             hideDocumentViewer();
@@ -263,7 +275,7 @@ function showDocumentViewer(){
     //    body.css('background-color', '');
     //}
     IsPDFOn = true;
-    writeOnPdfDocument();//enable wirte
+    //writeOnPdfDocument();//enable wirte
 }
 
 function onMouseDown(event) {
@@ -1434,6 +1446,10 @@ socket.on('pdf:load', function (artist, file) {
         IsPDFOn = true;
     }
 });
+//scroll pdf
+socket.on('pdf:scroll', function (position) {
+    document.getElementById('viewerContainer').scrollTop = position;
+});
 
 //write on pdf document
 
@@ -1445,7 +1461,7 @@ socket.on('pdf:edit', function(artist){
     }
 });
 //toggle pdf
-socket.on('pdf', function (state) {
+socket.on('pdf:toggle', function (state) {
     if(state) {
 
         hideDocumentViewer();

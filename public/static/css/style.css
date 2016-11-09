@@ -538,7 +538,15 @@ input[type=checkbox] {
     display: none;
     z-index: 500;
 }
+.pdf-controllers-container{
 
+    position: absolute;
+    top: 92%;
+    left: 10%;
+    padding: 5px 10px;
+    /*background: darkorange;*/
+    z-index: 20;
+}
 /*@media screen and (max-width: 600px) {
     .toolbar ul li.separator {
         display: none;

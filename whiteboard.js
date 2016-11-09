@@ -319,14 +319,25 @@ io.sockets.on('connection', function (socket) {
   socket.on('pdf:presentationMode', function(room, uid) {
     io.sockets.in(room).emit('pdf:presentationMode', uid);
   });
-//change to pdf
-  socket.on('pdf', function(room, uid, state) {
+//toggle to pdf
+  socket.on('pdf:toggle', function(room, uid, state) {
     if (!projects.projects[room] || !projects.projects[room].project) {
       loadError(socket);
       return;
     }
     //draw.clear(room, pageNum);
-    io.in(room).emit('pdf', state); // emit back the cleared count so both teacher and student will be in sync
+    io.in(room).emit('pdf:toggle', state); // emit back the cleared count so both teacher and student will be in sync
+  });
+
+  //scroll pdf
+  socket.on('pdf:scroll', function(room, uid, position) {
+   // console.log(position);
+    if (!projects.projects[room] || !projects.projects[room].project) {
+      loadError(socket);
+      return;
+    }
+    //draw.clear(room, pageNum);
+    io.in(room).emit('pdf:scroll', position); // emit back the cleared count so both teacher and student will be in sync
   });
 });
 
