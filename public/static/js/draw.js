@@ -239,14 +239,16 @@ $("[name='pdf-whiteboard-checkbox']").bootstrapSwitch();
 
 //toggle pdf
 $('input[name="pdf-whiteboard-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
-
+        socket.emit('pdf', room, uid, state);
         if(state) {
+
             hideDocumentViewer();
         }
         else
             showDocumentViewer();
 
 });
+
 function showDocumentViewer(){
 
     $('#myCanvas').css({'z-index':'0','top':'32px'});// pull down the canvas so that we can still use pdfjs control buttons while editing on top of pdf
@@ -1442,7 +1444,15 @@ socket.on('pdf:edit', function(artist){
         writeOnPdfDocument();
     }
 });
+//toggle pdf
+socket.on('pdf', function (state) {
+    if(state) {
 
+        hideDocumentViewer();
+    }
+    else
+        showDocumentViewer();
+});
 socket.on('pdf:hide', function(json){
     // no need to check for artist since both tutor and student need to load last page
     console.log('hide pdfviewer');
