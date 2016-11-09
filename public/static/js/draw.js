@@ -1452,7 +1452,7 @@ socket.on('pdf:scroll', function (position) {
     scrollSyncLock = true;
     document.getElementById('viewerContainer').scrollTop = position;
     //give some time to scroll
-    var delay=200;
+    var delay=2000;
     setTimeout(function() {
         scrollSyncLock=false;
     }, delay);
