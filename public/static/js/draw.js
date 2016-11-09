@@ -248,6 +248,7 @@ $('#viewerContainer').scroll(function(){
         socket.emit('pdf:scroll', room, uid, position);
         prevPos=position;
     }
+    scrollSyncLock=false;//if locked while scrolling by peer, unlock
 });
 //toggle pdf
 $('input[name="pdf-whiteboard-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
@@ -1451,11 +1452,7 @@ socket.on('pdf:load', function (artist, file) {
 socket.on('pdf:scroll', function (position) {
     scrollSyncLock = true;
     document.getElementById('viewerContainer').scrollTop = position;
-    //give some time to scroll
-    var delay=2000;
-    setTimeout(function() {
-        scrollSyncLock=false;
-    }, delay);
+
 
 });
 
