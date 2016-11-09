@@ -240,10 +240,11 @@ $("[name='pdf-whiteboard-checkbox']").bootstrapSwitch();
 //to sync scrolling pdf
 var prevPos=0;
 var scrollSyncThreshold = 50;//number of pixels scrolled to trigger sync
+var scrollSyncLock = false;//to avoid re scroll
 $('#viewerContainer').scroll(function(){
 
     var position = $('#viewerContainer').scrollTop();
-    if((prevPos-position)>scrollSyncThreshold||(prevPos-position)<(-scrollSyncThreshold)) {
+    if((!scrollSyncLock)&&((prevPos-position)>scrollSyncThreshold||(prevPos-position)<(-scrollSyncThreshold))) {
         socket.emit('pdf:scroll', room, uid, position);
         prevPos=position;
     }
@@ -1448,7 +1449,9 @@ socket.on('pdf:load', function (artist, file) {
 });
 //scroll pdf
 socket.on('pdf:scroll', function (position) {
+    scrollSyncLock = true;
     document.getElementById('viewerContainer').scrollTop = position;
+    scrollSyncLock=false;
 });
 
 //write on pdf document
