@@ -337,7 +337,7 @@ io.sockets.on('connection', function (socket) {
       return;
     }
     //draw.clear(room, pageNum);
-    io.in(room).emit('pdf:scroll', position); // emit back the cleared count so both teacher and student will be in sync
+    io.in(room).emit('pdf:scroll',uid, position); // emit back the cleared count so both teacher and student will be in sync
   });
 });
 

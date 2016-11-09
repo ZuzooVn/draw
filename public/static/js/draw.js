@@ -1456,9 +1456,10 @@ socket.on('pdf:load', function (artist, file) {
     }
 });
 //scroll pdf
-socket.on('pdf:scroll', function (position) {
-
-    document.getElementById('viewerContainer').scrollTop = position;
+socket.on('pdf:scroll', function (artist,position) {
+    if(artist != uid) {
+        document.getElementById('viewerContainer').scrollTop = position;
+    }
 
 
 });
