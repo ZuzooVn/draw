@@ -1451,7 +1451,12 @@ socket.on('pdf:load', function (artist, file) {
 socket.on('pdf:scroll', function (position) {
     scrollSyncLock = true;
     document.getElementById('viewerContainer').scrollTop = position;
-    scrollSyncLock=false;
+    //give some time to scroll
+    var delay=200;
+    setTimeout(function() {
+        scrollSyncLock=false;
+    }, delay);
+
 });
 
 //write on pdf document
