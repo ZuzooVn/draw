@@ -4,10 +4,11 @@ tool.minDistance = 1;
 tool.maxDistance = 45;
 
 room = window.location.pathname.split("/")[2];//get classroom id
-var role = window.location.pathname.split("/")[3];
+var myRole = window.location.pathname.split("/")[3];
 var TUTOR_ROLE = "tutor";
-if(!role){
-    role = TUTOR_ROLE;
+var STUDENT_ROLE="student";
+if(!myRole){
+    myRole = STUDENT_ROLE;
 }
 var redoStack = new Array(); // stack to store undo items
 var canvasClearedCount = 0; // keep track of number of times the canvas cleared, so we can override the correct previous page at db
@@ -249,7 +250,7 @@ var scrollSyncThreshold = 50;//number of pixels scrolled to trigger sync
 $('#viewerContainer').scroll(function(){
 
     var position = $('#viewerContainer').scrollTop();
-    if((role==TUTOR_ROLE)&&((prevPos-position)>scrollSyncThreshold||(prevPos-position)<(-scrollSyncThreshold))) {
+    if((myRole==TUTOR_ROLE)&&((prevPos-position)>scrollSyncThreshold||(prevPos-position)<(-scrollSyncThreshold))) {
         socket.emit('pdf:scroll', room, uid, position);
         prevPos=position;
     }
@@ -1070,6 +1071,7 @@ $('#documentLoadTool').on('click', function () {
         }
         socket.emit('pdf:load', room, uid, DEFAULT_URL);
     }
+    myRole = TUTOR_ROLE;
 });
 
 //To write on pdf document
