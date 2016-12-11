@@ -243,19 +243,6 @@ var selectToolMode = "ITEM_DRAG";
 // initialize the pdf-whiteboard-toggle
 $("[name='pdf-whiteboard-checkbox']").bootstrapSwitch();
 
-//to sync scrolling pdf
-var prevPos=0;
-var scrollSyncThreshold = 50;//number of pixels scrolled to trigger sync
-
-$('#viewerContainer').scroll(function(){
-
-    var position = $('#viewerContainer').scrollTop();
-    if((myRole==TUTOR_ROLE)&&((prevPos-position)>scrollSyncThreshold||(prevPos-position)<(-scrollSyncThreshold))) {
-        socket.emit('pdf:scroll', room, uid, position);
-        prevPos=position;
-    }
-
-});
 //toggle pdf
 $('input[name="pdf-whiteboard-checkbox"]').on('switchChange.bootstrapSwitch', function(event, state) {
         socket.emit('pdf:toggle', room, uid, state);
@@ -1505,8 +1492,8 @@ socket.on('pdf:pageChange', function (artist, page) {
 //!= is to avoid loop. Because we are listening to pdfjs zoom event to trigger zoom
 socket.on('pdf:zoom', function (artist, scale) {
     if (artist != uid && PDFViewerApplication.pdfViewer.currentScaleValue != scale) {
-        console.log('change zoom level to '+scale);
-            PDFViewerApplication.pdfViewer.currentScaleValue = scale;
+        console.log('change zoom level from'+PDFViewerApplication.pdfViewer.currentScaleValue+' to '+scale);
+        PDFViewerApplication.pdfViewer.currentScaleValue = scale;
 
     }
 });

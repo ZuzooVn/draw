@@ -14,6 +14,10 @@ var IsPDFOn = false; // variable used to synchronize edit pdf btn functionality 
 // Initialise Socket.io
 var socket = io.connect('/');
 
+//to sync scrolling pdf
+var prevPos=0;
+var scrollSyncThreshold = 50;//number of pixels scrolled to trigger sync
+
 $(function() {
     $('#container').jstree({
         'core' : {
@@ -132,7 +136,7 @@ $(function (){
 
 //These events are emited in pdf js. Please refer viewer.js
 $(document).bind('pagechange', function (e) {
-    console.log('Page changed .'+PDFViewerApplication.page);
+    console.log('Page changed .'+PDFViewerApplication.page+'event page'+e.pageNumber);
     socket.emit('pdf:pageChange', room, uid, PDFViewerApplication.page);
 });
 
@@ -141,6 +145,17 @@ $(document).bind('scalechange', function (e) {
     socket.emit('pdf:zoom', room, uid, PDFViewerApplication.pdfViewer.currentScaleValue);
 });
 
-$(document).bind('updateviewarea', function (e) {
-    console.log('updateviewarea '+PDFViewerApplication.pdfViewer.scroll.down+' '+PDFViewerApplication.pdfViewer.scroll.lastY);
+// $(document).bind('updateviewarea', function (e) {
+//     console.log('updateviewarea '+PDFViewerApplication.pdfViewer.scroll.down+' '+PDFViewerApplication.pdfViewer.scroll.lastY);
+// });
+
+
+$('#viewerContainer').scroll(function(){
+
+    var position = $('#viewerContainer').scrollTop();
+    if((myRole==TUTOR_ROLE)&&((prevPos-position)>scrollSyncThreshold||(prevPos-position)<(-scrollSyncThreshold))) {
+        socket.emit('pdf:scroll', room, uid, position);
+        prevPos=position;
+    }
+
 });
