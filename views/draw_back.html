@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Siplo Whiteboard</title>
+    <link rel='stylesheet' href='/wb_assets/static/css/farbtastic.css'>
+    <link rel="stylesheet" href="/wb_assets/static/css/AdminLTE-2.3.0/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/wb_assets/static/css/AdminLTE-2.3.0/bootstrap/css/bootstrap-theme.css">
+    <link rel='stylesheet' href='/wb_assets/static/css/style.css'>
+    <link rel='stylesheet' href='/wb_assets/static/css/animate.min.css'>
+    <link href="/wb_assets/static/css/bootstrap-switch.min.css" rel="stylesheet">
+    <script>
+        /*
+         |@licstart  The following is the entire license notice for the
+         JavaScript code in this page.|
+
+         Copyright 2011 Peter Martischka, Primary Technology.
+
+         Licensed under the Apache License, Version 2.0 (the "License");
+         you may not use this file except in compliance with the License.
+         You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+         Unless required by applicable law or agreed to in writing, software
+         distributed under the License is distributed on an "AS IS" BASIS,
+         WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+         See the License for the specific language governing permissions and
+         limitations under the License.
+
+         |@licend  The above is the entire license notice
+         for the JavaScript code in this page.|
+         */
+    </script>
+    <style>
+
+        @media screen and (max-device-width: 425px) {
+            .tool-box > div.row {
+                display: none;
+            }
+        }
+
+        @media screen and (max-device-height: 425px) {
+            .tool-box > div.row {
+                display: none;
+            }
+        }
+    </style>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="shortcut icon" href="/wb_assets/static/img/favicon.ico">
+
+    <script src='/socket.io/socket.io.js'></script>
+    <script src='/wb_assets/static/js/lib/jquery.js'></script>
+    <script src='/wb_assets/static/js/lib/jquery_browser.js'></script>
+    <script src='/wb_assets/static/js/lib/paper.js'></script>
+    <script src='/wb_assets/static/js/lib/webtoolkit.base64.js'></script>
+    <script src='/wb_assets/static/js/lib/farbtastic.js'></script>
+    <script src='/wb_assets/static/js/lib/jquery.pep.min.js'></script>
+    <script src='/wb_assets/static/js/draw.js' type="text/paperscript" canvas="myCanvas"></script>
+    <script>document.domain = document.domain;</script>
+    <script src="/wb_assets/static/css/AdminLTE-2.3.0/bootstrap/js/bootstrap.min.js"></script>
+    <!--pdfjs on whiteboard-->
+    <script src="/build/pdf.js"></script>
+    <!--end pdfjs-->
+
+    <!--File Browser-->
+    <!--<script src='/wb_assets/static/vendor/jquery/dist/jquery.min.js'></script>-->
+    <script src='/wb_assets/static/vendor/jstree/dist/jstree.min.js'></script>
+    <script src='/wb_assets/static/pdfjs/fileBrowser/siploPdfViewer.js'></script>
+    <link rel="stylesheet" href="/wb_assets/static/vendor/jstree/dist/themes/default/style.min.css" />
+    <link rel="stylesheet" href="/wb_assets/static/pdfjs/fileBrowser/siploPdfViewer.css" />
+    <!--File Browser-->
+
+    <!--<link rel="stylesheet" href="/web/viewer.css">-->
+    <script src="/web/compatibility.js"></script>
+    <!-- This snippet is used in production (included from viewer.html) -->
+    <link rel="resource" type="application/l10n" href="locale/locale.properties">
+    <script src="/web/l10n.js"></script>
+    <!--Cropper-->
+    <link rel="stylesheet" href="/wb_assets/static/cropper/cropper.css">
+    <script type="text/javascript" src="/wb_assets/static/cropper/cropper.js"></script>
+    <script type="text/javascript" src="/wb_assets/static/cropper/siploImageCropper.js"></script>
+
+</head>
+
+<body style="overflow: hidden">
+<!--Draw content start-->
+<div class="container tool-box">
+    <div class="row">
+        <!--Buttons used to trigger events in draw.js from siploPdfViewer.js-->
+        <!--<button id="testPDFGeneration" class="btn btn-info">Generate PDF</button>-->
+        <button id="pdfRenderEventEmitter"></button>
+        <button id="canvasClear"></button>
+        <button id="imgCropped"></button>
+        <!-- paint brush/ pencil / eraser / hand tool -->
+        <div class="col-md-1 col-sm-1 col-xs-1 tool">
+            <div class="dropup">
+                <button class="btn dropdown-toggle buttonicon buttonicon-basic-tools" type="button" data-toggle="dropdown" title="Basic Tools"></button>
+                <ul class="dropdown-menu compound-box">
+                    <li id="pencilTool" >
+                        <a class="grouped-middle" data-l10n-id="draw.toolbar.pencil.title" title="Pencil Tool">
+                            <span class="buttonicon buttonicon-pencil"></span>
+                        </a>
+                    </li>
+                    <li id="eraserTool" >
+                        <a class="grouped-middle" data-l10n-id="draw.toolbar.pencil.title" title="Eraser Tool">
+                            <span class="buttonicon buttonicon-eraser"></span>
+                        </a>
+                    </li>
+                    <li id="drawTool">
+                        <a class="grouped-left" data-l10n-id="draw.toolbar.draw.title" title="Brush Tool">
+                            <span class="buttonicon buttonicon-draw"></span>
+                        </a>
+                    </li>
+
+
+                    <li id="pointTool">
+                        <a class="grouped-left" data-l10n-id="draw.toolbar.draw.title" title="Point Tool">
+                            <span class="buttonicon buttonicon-point"></span>
+                        </a>
+                    </li>
+                    <li id="textBoxTool">
+                        <a class="grouped-left" data-l10n-id="draw.toolbar.draw.title" title="Text Box">
+                            <span class="buttonicon buttonicon-textBox"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Shapes -->
+        <div class="col-md-1 col-sm-1 col-xs-1 tool">
+            <div class="dropup">
+                <button class="btn dropdown-toggle buttonicon buttonicon-shapes" type="button" data-toggle="dropdown" title="Shapes"></button>
+                <ul class="dropdown-menu compound-box">
+                    <li id="lineTool" >
+                        <a>
+                            <span class="buttonicon buttonicon-line"></span>
+                        </a>
+                    </li>
+                    <li id="rectangleTool" >
+                        <a>
+                            <span class="buttonicon buttonicon-rectangle"></span>
+                        </a>
+                    </li>
+                    <li id="triangleTool" >
+                        <a>
+                            <span class="buttonicon buttonicon-triangle"></span>
+                        </a>
+                    </li>
+                    <li id="circleTool" >
+                        <a>
+                            <span class="buttonicon buttonicon-circle"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!--Pdf Viewer-->
+        <div class="col-md-1 col-sm-1 col-xs-1 tool">
+            <div class="dropup">
+                <button class="btn dropdown-toggle buttonicon buttonicon-pdf-tools" type="button" data-toggle="dropdown" title="PDF File Operations"></button>
+                <ul class="dropdown-menu compound-box">
+                    <li id="documentLoadTool" >
+                        <a class="grouped-right"
+                           data-l10n-id="draw.toolbar.import_export.title" title="Load PDF">
+                            <span class="buttonicon buttonicon-load-pdf"></span>
+                        </a>
+                    </li>
+                    <li id="documentRemoveTool" class="disabled">
+                        <a class="grouped-right"
+                           data-l10n-id="draw.toolbar.import_export.title" title="Remove PDF">
+                            <span class="buttonicon buttonicon-remove-pdf"></span>
+                        </a>
+                    </li>
+                    <!--<li id="documentEditTool" >
+                        <a class="grouped-right"
+                           data-l10n-id="draw.toolbar.import_export.title" title="Edit PDF">
+                            <span class="buttonicon buttonicon-edit-pdf"></span>
+                        </a>
+                    </li>-->
+                </ul>
+            </div>
+        </div>
+
+        <!--Page Operations-->
+        <div class="col-md-1 col-sm-1 col-xs-1 tool">
+            <div class="dropup">
+                <button class="btn dropdown-toggle buttonicon buttonicon-page-tools" type="button" data-toggle="dropdown" title="Page Operations"></button>
+                <ul class="dropdown-menu compound-box">
+                    <li id="load-new-pg" >
+                        <a title="New Page">
+                            <span class="buttonicon buttonicon-new-page"></span>
+                        </a>
+                    </li>
+                    <li id="load-previous-pg" class="disabled">
+                        <a title="Go To Previous Page">
+                            <span class="buttonicon buttonicon-previous-page"></span>
+                        </a>
+                    </li>
+                    <li id="load-next-pg" class="disabled">
+                        <a title="Go To Next Page">
+                            <span class="buttonicon buttonicon-next-page"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!--Clear Button-->
+        <div class="col-md-1 col-sm-1 col-xs-1 tool" id="clearTool">
+            <a class="grouped-middle" data-l10n-id="draw.toolbar.select.title" title="Clear Page">
+                <span class="buttonicon buttonicon-clear"></span>
+            </a>
+        </div>
+
+        <!-- Select Tool -->
+        <div class="col-md-1 col-sm-1 col-xs-1 tool" id="selectTool">
+            <a class="grouped-middle" data-l10n-id="draw.toolbar.select.title" title="Select Tool">
+                <span class="buttonicon buttonicon-select"></span>
+            </a>
+        </div>
+
+        <!-- color Selector Toggle -->
+        <div class="col-md-1 col-sm-1 col-xs-1 tool" id="colorToggle">
+            <a class="grouped-right" data-l10n-id="draw.toolbar.colorToggle.title" title="Color">
+                <span class="buttonicon buttonicon-color" style=""></span>
+            </a>
+        </div>
+
+        <!-- Upload -->
+        <div class="col-md-1 col-sm-1 col-xs-1 tool" id="uploadImage">
+            <a class="grouped-middle" data-l10n-id="draw.toolbar.upload.title" title="Upload an Image">
+                <span class="buttonicon buttonicon-upload"></span>
+            </a>
+        </div>
+
+        <!--Import or export-->
+        <div class="col-md-1 col-sm-1 col-xs-1 tool" id="importAsImage">
+            <a class="grouped-right" data-l10n-id="draw.toolbar.import_export.title" title="Export As a Image">
+                <span class="buttonicon buttonicon-import_export"></span>
+            </a>
+        </div>
+
+        <!--Undo-->
+        <div class="col-md-1 col-sm-1 col-xs-1 tool">
+            <a id="undoTool" class="grouped-right" data-l10n-id="draw.toolbar.undoTool.title" title="Undo">
+                <span class="buttonicon buttonicon-undo disabled"></span>
+            </a>
+        </div>
+
+        <!--Redo-->
+        <div class="col-md-1 col-sm-1 col-xs-1 tool">
+            <a id="redoTool" class="grouped-right" data-l10n-id="draw.toolbar.redoTool.title" title="Redo">
+                <span class="buttonicon buttonicon-redo disabled"></span>
+            </a>
+        </div>
+
+        <!--ToolBox Toggle-->
+        <!--<div class="col-md-1 col-sm-1 col-xs-1 tool" style="top:-5px;">-->
+            <!--<input id="toolBoxToggle" type="checkbox" name="toolbar-toggle-checkbox" checked data-on-color="success" data-off-color="danger">-->
+        <!--</div>-->
+    </div>
+</div>
+
+<div id="importexport" class="popup">
+    <h1 data-l10n-id="draw.importExport.import_export">Export</h1>
+
+    <div class="column">
+        <h2 data-l10n-id="draw.importExport.export"></h2>
+        <div><a id="exportSVG" download="siplo.svg" target="_blank" class="exportlink">Export SVG</a></div>
+        <div><a id="exportPNG" download="siplo.png" target="_self" class="exportlink">Export PNG</a></div>
+    </div>
+</div>
+
+<div id="lostConnection" class="hidden">
+    <p>Lost connection to the server! Please refresh this page.</p>
+</div>
+
+<div id="loading" class="hidden" style="display:block;">
+    <p>Loading existing sketch... Click and hold to access the colour wheel</p>
+</div>
+
+<!--<input type="file" id="imageInput" accept="image/*"/>-->
+
+<div id="activeColorSwatch"></div>
+<div class="pdf-controllers-container">
+    <div>
+        <button id="prev" onclick="onPrevPage()">Previous</button>
+        <button id="next" onclick="onNextPage()">Next</button>
+        <input type="checkbox" name="pdf-whiteboard-checkbox" checked data-on-color="success" data-off-color="danger" data-on-text="NOTE" data-off-text="PDF">
+    </div>
+    <div class="text-center">
+        <span>Page: <span id="page_num">1</span> / <span id="page_count">1</span></span>
+    </div>
+</div>
+<div class="whiteboard-page-number-container">
+    <span>Page: <span id="whiteboard-page-num">1</span> / <span id="whiteboard-page-count">1</span></span>
+</div>
+
+<div id="canvasContainer" style="">
+    <canvas id="pdfCanvas"></canvas>
+    <canvas id="myCanvas"></canvas>
+    <div id="mycolorpicker">
+        <div id="colorpickerMover"></div>
+        <div id="colorpicker"></div>
+        <div id="opacity">
+            <div id="opacityLabel">Opacity</div>
+            <input type="range" min="0" max="255" value="200" id="opacityRangeVal">
+        </div>
+    </div>
+</div>
+
+<!--http://stackoverflow.com/questions/25874001/how-to-put-scrollbar-only-for-modal-body-in-bootstrap-modal-dialog-->
+<div id = "fileBrowserModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="overflow-y: scroll; max-height:85%;  margin-top: 50px; margin-bottom:50px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Select a File</h3>
+            </div>
+            <div class="modal-body">
+                <div id="container">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id='openFileButton' class="btn btn-default">Open</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--dummy cursor-->
+<img src="/wb_assets/static/img/laser_dot.png" width="24" height="24" id="dummy-cursor">
+
+<!--TextBox Container-->
+<div id="whiteboard-text-box-container">
+    <div class="text-box-options-container">
+        <select name="font-colors">
+            <option value="black" >Black</option>
+            <option value="white" >White</option>
+            <option value="red" >Red</option>
+            <option value="green" >Green</option>
+            <option value="blue" >Blue</option>
+        </select>
+        <select name="font-sizes">
+            <option value="14">Small</option>
+            <option value="18">Medium</option>
+            <option value="22">Large</option>
+        </select>
+    </div>
+    <textarea name="" id="text-box" cols="30" rows="5">
+    </textarea>
+    <button class="btn-primary" id="text-box-save">
+        OK
+    </button>
+</div>
+
+<!-- Image Cropping Modal -->
+<div id="imgCroppingModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" style="height: auto">
+                <div class="img-container">
+                    <img id="croppingImg" src="https://fengyuanchen.github.io/cropper/img/picture.jpg" alt="" class="">
+                </div>
+                <button type="button" class="btn btn-default" onclick="getCroppedImage()">Crop</button>
+                <input type="file" onchange="updateCropperCanvas(this)" id="croppingImgUpload" accept="image/*"/>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="/wb_assets/static/js/bootstrap-switch.js"></script>
+</body>
+</html>
