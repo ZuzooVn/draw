@@ -1099,7 +1099,7 @@ $('#clearTool').on('click', function () {
     //activeTool = "none";
     // clear();
     clearCanvas();
-    //socket.emit('clear', room, uid, currentPageNumber);
+    socket.emit('canvas:clear', room, uid, currentPageNumber);
 });
 function writeOnPdfDocument(){
     if($('#myCanvas').css('z-index') <= 0){
