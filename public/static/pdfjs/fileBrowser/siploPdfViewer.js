@@ -10,7 +10,7 @@
 var room;
 var uid;
 var IsPDFOn = false; // variable used to synchronize edit pdf btn functionality on draw js
-
+var isInitializedByMe=false;
 // Initialise Socket.io
 var socket = io.connect('/');
 
@@ -79,7 +79,7 @@ $(function(){
         //PDFViewerApplication is an object defined in viewer.js
         //PDFViewerApplication.open('/web/compressed.tracemonkey-pldi-09.pdf');
         $('#fileBrowserModal').modal('hide');
-        PDFViewerApplication.open('/files/'+DEFAULT_URL);
+        PDFViewerApplication.open('/user_files/batch-12-Module-CS2036/'+DEFAULT_URL);
         var documentViewer = $('#documentViewer');
         if (documentViewer.css('visibility') == 'hidden') {
             documentViewer.css('visibility', 'visible');
@@ -89,6 +89,7 @@ $(function(){
             $('#myCanvas').css('top','32px'); // pull down the canvas so that we can still use pdfjs control buttons while editing on top of pdf
         }
         IsPDFOn = true;
+        isInitializedByMe = true;
         socket.emit('pdf:load', room, uid, DEFAULT_URL);
     }); 
 });
@@ -130,14 +131,14 @@ $(function (){
         console.log('Entering to presentation mode');
         socket.emit('pdf:presentationMode', room, uid);
     });
-})
+});
 
 
 
 //These events are emited in pdf js. Please refer viewer.js
 $(document).bind('pagechange', function (e) {
     console.log('Page changed .'+PDFViewerApplication.page+'event page'+e.pageNumber);
-    socket.emit('pdf:pageChange', room, uid, PDFViewerApplication.page);
+    //socket.emit('pdf:pageChange', room, uid, PDFViewerApplication.page);
 });
 
 $(document).bind('scalechange', function (e) {
@@ -145,17 +146,23 @@ $(document).bind('scalechange', function (e) {
     socket.emit('pdf:zoom', room, uid, PDFViewerApplication.pdfViewer.currentScaleValue);
 });
 
-// $(document).bind('updateviewarea', function (e) {
-//     console.log('updateviewarea '+PDFViewerApplication.pdfViewer.scroll.down+' '+PDFViewerApplication.pdfViewer.scroll.lastY);
-// });
+$(document).bind('documentload', function (e) {
+    console.log('document Change .'+PDFViewerApplication.pdfViewer.pdfDocument);
+    //socket.emit('pdf:zoom', room, uid, PDFViewerApplication.pdfViewer.currentScaleValue);
+});
+$(document).bind('updateviewarea', function (e) {
+    console.log('updateviewarea '+PDFViewerApplication.pdfViewer.scroll.down+' '+PDFViewerApplication.pdfViewer.scroll.lastY);
+    if(isInitializedByMe)
+        socket.emit('pdf:scroll', room, uid, PDFViewerApplication.pdfViewer.scroll.lastY);
+});
 
 
 $('#viewerContainer').scroll(function(){
 
-    var position = $('#viewerContainer').scrollTop();
-    if((myRole==TUTOR_ROLE)&&((prevPos-position)>scrollSyncThreshold||(prevPos-position)<(-scrollSyncThreshold))) {
-        socket.emit('pdf:scroll', room, uid, position);
-        prevPos=position;
-    }
+    // var position = $('#viewerContainer').scrollTop();
+    // if((myRole==TUTOR_ROLE)&&((prevPos-position)>scrollSyncThreshold||(prevPos-position)<(-scrollSyncThreshold))) {
+    //     socket.emit('pdf:scroll', room, uid, position);
+    //     prevPos=position;
+    // }
 
 });

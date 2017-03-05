@@ -15,6 +15,45 @@ body {
     font-family: Helvetica, Arial, sans-serif
 }
 
+#whiteboard-text-box-container{
+    position: absolute;
+    display: none;
+    background: -webkit-linear-gradient(#F7F7F7, #EEE);
+    padding: 30px 20px 20px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px #ddd;
+    z-index: 500;
+}
+
+.text-box-options-container{
+    margin-bottom: 15px;
+}
+
+.text-box-options-container > select[name="font-colrs"] >option >span{
+
+}
+#whiteboard-text-box-container>button{
+    display: block;
+    margin: 5px 0;
+    padding: 3px 20px;
+    border-radius: 5px;
+    border: none;
+}
+
+#whiteboard-text-box-container>button:focus{
+    outline: none;
+}
+
+#whiteboard-text-box-container>textarea{
+    border-radius: 10px;
+    padding-top: 5px;
+}
+
+#whiteboard-text-box-container>textarea:focus{
+    outline: none;
+}
+
 #dummy-cursor{
     position: absolute;
     display: none;
@@ -26,6 +65,7 @@ body {
     top: 93%;
     width: 100%;
     padding: 0 350px;
+    display: none;
 }
 
 .tool-box .tool{
@@ -42,7 +82,7 @@ body {
 }
 
 .tool-box .compound-box{
-    width: 65px;
+    width: 72px;
     min-width: 60px;
     left: -70%;
 }
@@ -291,8 +331,8 @@ body {
 }
 
 .buttonicon {
-    width: 24px;
-    height: 24px;
+    width: 34px;
+    height: 32px;
     background-image: url('../../static/img/etherpad_lite_icons.png');
     background-repeat: no-repeat;
     display: inline-block;
@@ -319,6 +359,10 @@ body {
     background-image: url('../../static/img/select.png');
 }
 
+.buttonicon-clear {
+    background-image: url('../../static/img/close.png');
+}
+
 .buttonicon-upload {
     background-image: url('../../static/img/upload.png');
 }
@@ -328,12 +372,13 @@ body {
 
 .buttonicon-page-tools {
     background-image: url('../../static/img/page-process-icon.png');
-    background-color: white;
+    background-color: transparent;
+    height: 34px;
 }
 
 .buttonicon-page-tools:active {
     background-image: url('../../static/img/page-process-icon.png');
-    background-color: white;
+    background-color: transparent;
 }
 
 .buttonicon-page-tools:active:focus {
@@ -341,7 +386,7 @@ body {
 }
 
 .buttonicon-new-page{
-    background-image: url('../../static/img/new-page-icon.png');
+    background-image: url('../../static/img/page_operations-new_page.png');
 }
 
 .buttonicon-previous-page{
@@ -372,11 +417,11 @@ body {
 }
 
 .buttonicon-load-pdf {
-    background-image: url('../../static/img/file-add-icon.png');
+    background-image: url('../../static/img/pdf_operations-import_pdf.png');
 }
 
 .buttonicon-remove-pdf {
-    background-image: url('../../static/img/file-remove-icon.png');
+    background-image: url('../../static/img/pdf_operations-remove_pdf.png');
 }
 
 .buttonicon-edit-pdf {
@@ -386,13 +431,13 @@ body {
 
 .buttonicon-basic-tools {
     background-image: url('../../static/img/brush-pencil-icon.png');
-    background-color: white;
-    height: 25px;
+    background-color: transparent;
+    height: 34px;
 }
 
 .buttonicon-basic-tools:active {
     background-image: url('../../static/img/brush-pencil-icon.png');
-    background-color: white;
+    background-color: transparent;
 }
 
 .buttonicon-basic-tools:active:focus {
@@ -401,12 +446,13 @@ body {
 
 .buttonicon-shapes {
     background-image: url('../../static/img/shapes.png');
-    background-color: white;
+    background-color: transparent;
+    height: 34px;
 }
 
 .buttonicon-shapes:active {
     background-image: url('../../static/img/shapes.png');
-    background-color: white;
+    background-color: transparent;
 }
 
 .buttonicon-shapes:active:focus {
@@ -415,12 +461,13 @@ body {
 
 .buttonicon-pdf-tools {
     background-image: url('../../static/img/pdf.png');
-    background-color: white;
+    background-color: transparent;
+    height: 34px;
 }
 
 .buttonicon-pdf-tools:active {
     background-image: url('../../static/img/pdf.png');
-    background-color: white;
+    background-color: transparent;
 }
 
 .buttonicon-pdf-tools:active:focus {
@@ -448,6 +495,10 @@ body {
     background-image: url('../../static/img/point-icon.png');
 }
 
+.buttonicon-textBox {
+    background-image: url('../../static/img/text-box.png');
+}
+
 .buttonicon-embed {
     background-position: 0px -18px
 }
@@ -455,9 +506,7 @@ body {
 .buttonicon-showusers {
     background-position: 0px -183px;
 }
-.buttonicon-clear {
-    background-image: url('../../static/img/close.png');
-}
+
 #online_count {
     color: #888;
 }
@@ -538,15 +587,7 @@ input[type=checkbox] {
     display: none;
     z-index: 500;
 }
-.pdf-controllers-container{
 
-    position: absolute;
-    top: 92%;
-    left: 10%;
-    padding: 5px 10px;
-    /*background: darkorange;*/
-    z-index: 20;
-}
 /*@media screen and (max-width: 600px) {
     .toolbar ul li.separator {
         display: none;
@@ -687,6 +728,9 @@ input[type=checkbox] {
 
 #canvasContainer {
     position: absolute;
+    height: 100%;
+    margin-right: 190px;
+    overflow-y: scroll;
     top: 0;
     left: 0;
     right: 0;
@@ -714,13 +758,89 @@ input[type=checkbox] {
     left: 0;
     right: 0;
     bottom: 0;
-    /*width: 100%;
-    height: 100%;*/
+    width: 100%;
+    height: 200%;
     display: block;
 }
 
+#pdfCanvas {
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+#pdfRenderEventEmitter {
+    display: none;
+}
+
+#canvasClear {
+    display: none;
+}
+#imgCropped{
+    display: none;
+}
+#toolBoxToggle{
+    position: absolute;
+    top: 0;
+    left: 80%;
+    padding: 5px 20px;
+    display: none;
+}
+#toolBoxToggle:focus{
+    outline: none;
+}
+#toolBoxToggle:active{
+    color: white;
+    background: orange;
+}
+
+/* styles for cropper*/
+.img-container img {
+    max-width: 100%
+}
+.cropOption {
+    text-align: center;
+    padding: 10px;
+}
+.cropOption span {
+    margin: 0 5px
+}
+/*******************/
+
+.pdf-controllers-container{
+    display: none;
+    position: absolute;
+    top: 90%;
+    padding: 5px 10px;
+    background: darkorange;
+    z-index: 20;
+}
+.pdf-controllers-container span{
+    color: white;
+    font-weight: 700;
+}
+.pdf-controllers-container button{
+    padding: 2px 15px;
+    border: 3px solid white;
+    border-radius: 10px;
+    color: black;
+    background: green;
+}
+.pdf-controllers-container button:focus{
+    outline: none;
+}
 .whiteBG {
     background-color: #fff;
+}
+
+.whiteboard-page-number-container{
+    position: absolute;
+    top: 93%;
+    padding: 5px 10px;
+    background: darkorange;
+    z-index: 15;
+    color: white;
+    font-size: 20px;
 }
 
 .video_conv {

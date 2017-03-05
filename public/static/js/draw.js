@@ -8,7 +8,7 @@ var myRole = window.location.pathname.split("/")[3];
 var TUTOR_ROLE = "tutor";
 var STUDENT_ROLE="student";
 if(!myRole){
-    myRole = STUDENT_ROLE;
+    myRole = TUTOR_ROLE;
 }
 var redoStack = new Array(); // stack to store undo items
 var canvasClearedCount = 0; // keep track of number of times the canvas cleared, so we can override the correct previous page at db
@@ -18,7 +18,13 @@ var currentPageNumber = 0; // when a previous page is loaded, this value should 
 * 0 - latest page
 * 1,2,3,4,5 - previous page
 */
-
+// initialize toolbox
+if(myRole == TUTOR_ROLE){
+    $("[name='toolbar-toggle-checkbox']").bootstrapSwitch();
+    $('.tool-box').css({"display":"block"});
+    $('#toolBoxToggle').css({"display":"block"});
+    $('.tool-box').addClass('animated zoomIn');
+}
 function removeStylingFromTools() {
     $('.tool-box .tool').css({
         border: "none"
@@ -1425,7 +1431,7 @@ socket.on('pdf:load', function (artist, file) {
         }
         else {
             DEFAULT_URL = file;
-            PDFViewerApplication.open('/files/'+file);
+            PDFViewerApplication.open('/user_files/batch-12-Module-CS2036/'+file);
         }
 
         $('#myCanvas').css({'z-index':'0','top':'32px'});// pull down the canvas so that we can still use pdfjs control buttons while editing on top of pdf

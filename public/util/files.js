@@ -11,7 +11,7 @@ exports.processPath = function(req, res){
     console.log(__dirname);
     console.log(req.query.id);
     if(req.query.id == '#'){
-        pathToProcess = path.resolve(__dirname, '..', '..', 'user_files');
+        pathToProcess = path.resolve(__dirname, '..', '..', 'user_files/batch-12-Module-CS2036');
     }
     else {
         pathToProcess = req.query.id;

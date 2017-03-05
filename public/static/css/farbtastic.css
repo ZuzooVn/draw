@@ -34,7 +34,7 @@
   height: 101px;
 }
 .farbtastic .wheel {
-  background: url(../img/wheel.png) no-repeat;
+  /*background: url(../img/wheel.png) no-repeat;*/
   width: 195px;
   height: 195px;
 }
