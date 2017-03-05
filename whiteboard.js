@@ -339,6 +339,11 @@ io.sockets.on('connection', function (socket) {
     //draw.clear(room, pageNum);
     io.in(room).emit('pdf:scroll',uid, position); // emit back the cleared count so both teacher and student will be in sync
   });
+  // add text
+  socket.on('add:textbox', function(room, uid, text, fontColor, fontSize, position, name, pgNum) {
+    draw.addText(room, uid, text, position, fontColor, fontSize, name, pgNum);
+    io.sockets.in(room).emit('add:textbox', uid, text, fontColor, fontSize, position, name);
+  });
 });
 
 // Subscribe a client to a room

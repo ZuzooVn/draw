@@ -103,6 +103,11 @@
                             <span class="buttonicon buttonicon-draw"></span>
                         </a>
                     </li>
+                    <li id="textBoxTool">
+                        <a class="grouped-left" data-l10n-id="draw.toolbar.draw.title" title="Text Box">
+                            <span class="buttonicon buttonicon-textBox"></span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -245,6 +250,7 @@
 
     </div>
 </div>
+
 <div class="pdf-controllers-container">
     <div class="    tool">
         <!--pdf toggle -->
@@ -662,7 +668,28 @@
         </div>
     </div>
 </div>
-
+<!--TextBox Container-->
+<div id="whiteboard-text-box-container">
+    <div class="text-box-options-container">
+        <select name="font-colors">
+            <option value="black" >Black</option>
+            <option value="white" >White</option>
+            <option value="red" >Red</option>
+            <option value="green" >Green</option>
+            <option value="blue" >Blue</option>
+        </select>
+        <select name="font-sizes">
+            <option value="14">Small</option>
+            <option value="18">Medium</option>
+            <option value="22">Large</option>
+        </select>
+    </div>
+    <textarea name="" id="text-box" cols="30" rows="5">
+    </textarea>
+    <button class="btn-primary" id="text-box-save">
+        OK
+    </button>
+</div>
 <!--http://stackoverflow.com/questions/25874001/how-to-put-scrollbar-only-for-modal-body-in-bootstrap-modal-dialog-->
 <div id = "fileBrowserModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="overflow-y: scroll; max-height:85%;  margin-top: 50px; margin-bottom:50px;">

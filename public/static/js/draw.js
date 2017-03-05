@@ -410,7 +410,10 @@ function onMouseDown(event) {
             paper.project.activeLayer.selected = false;
         }
     }
-
+    else if(activeTool == "textBox"){
+        textBoxCoordinate = event.point;
+        $('#whiteboard-text-box-container').css({"top": event.point.y + 'px', "left": event.point.x + 'px', "display": "block"});
+    }
     // send the position of cursor to other party of the class
     if (activeTool == "point") {
         socket.emit('pointing:start', room, uid, event.point);
@@ -1040,7 +1043,36 @@ $('#pointTool').on('click', function () {
     activeTool = "point";
     //console.log();
 });
+$('#textBoxTool').on('click', function () {
+    removeStylingFromTools();
+    $('#textBoxTool > a').css({
+        background: "orange"
+    }); // set the selected tool css to show it as active    activeTool = "point";
+    $('#myCanvas').css('cursor', 'text');
+    activeTool = "textBox";
+});
 
+
+$('#text-box-save').on('click', function(){
+    var text = $('#text-box').val().trim();
+    var fontColor = $('select[name="font-colors"]').val();
+    var fontSize = $('select[name="font-sizes"]').val();
+    if(text.length > 0){
+        var text = new PointText({
+            point: textBoxCoordinate,
+            content: text,
+            fillColor: fontColor,
+            fontSize: fontSize
+        });
+        text.name = uid + ":" + (++paper_object_count);
+        socket.emit('add:textbox', room, uid, text, fontColor, fontSize, textBoxCoordinate, name, currentPageNumber);
+        activeTool = "none";
+        textBoxCoordinate = null;
+        $('#text-box').val('');  // empty the text box
+        $('#whiteboard-text-box-container').css({"display": "none"}); // hide the text box container
+        $('#myCanvas').css('cursor', 'pointer');
+    }
+});
 $('#documentLoadTool').on('click', function () {
     removeStylingFromTools();
     $('#documentLoadTool > a').css({
@@ -1511,6 +1543,19 @@ socket.on('pdf:presentationMode', function (artist) {
         var elem = $('documentViewer'); // Make the body go full screen.
         requestFullScreen(elem);
         $('body').addClass("sidebar-collapse");
+    }
+});
+
+socket.on('add:textbox', function (artist, text, fontColor, fontSize, position, name) {
+    if (artist != uid) {
+        var text = new PointText({
+            point: new Point(position[1], position[2]),
+            content: text[1].content,
+            fillColor: fontColor,
+            fontSize: fontSize
+        });
+        text.name = name;
+        view.draw();
     }
 });
 
