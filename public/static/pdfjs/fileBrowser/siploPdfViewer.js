@@ -78,19 +78,23 @@ $(function(){
 //open pdf file
 $(function(){
     $('#openFileButton').click(function(){
-        $('body').css('background-color', '#404040');
-        $('.pdf-controllers-container').css('display', 'block');
+        console.log('openning ' + DEFAULT_URL);
+        //PDFViewerApplication is an object defined in viewer.js
+        //PDFViewerApplication.open('/web/compressed.tracemonkey-pldi-09.pdf');
         $('#fileBrowserModal').modal('hide');
-        setupPDFRendering(selectedPDF, function(){
-            if(!pdfPageCount.hasOwnProperty(selectedPDF)){  //  loading a new pdf
-                pdfPageCount[selectedPDF] = 0;
-                renderPage(pageNum);
-                socket.emit('pdf:load', room, uid, parentDirectory, selectedPDF);
-            } else{ // loading a previously opened pdf
-                socket.emit('pdf:setUpPDFnRenderFromDB', room, uid, pageNum, pdfPageCount, parentDirectory, selectedPDF);
-            }
-        });
-    }); 
+        PDFViewerApplication.open('/user_files/'+parentDirectory +'/'+selectedPDF);
+        var documentViewer = $('#documentViewer');
+        if (documentViewer.css('visibility') == 'hidden') {
+            documentViewer.css('visibility', 'visible');
+            //dynamically assigning the background color and image as in viewer.css #230. Otherwise
+            //this background color for body tag will make conflicts with whiteboard
+            $('body').css('background-color', '#404040');
+            $('#myCanvas').css('top','32px'); // pull down the canvas so that we can still use pdfjs control buttons while editing on top of pdf
+        }
+        IsPDFOn = true;
+        socket.emit('pdf:load', room, uid, selectedPDF);
+
+});
 });
 
 /*Zoom In*/
