@@ -25,7 +25,7 @@ var pdfDoc,
     ctx;
 
 var DEFAULT_URL = ''; // added from Viewer.js
-
+/*
 $(function() {
     $('#container').jstree({
         'core' : {
@@ -38,9 +38,9 @@ $(function() {
         }
     });
 });
-
+*/
 /* Select PDF file from file directory*/
-
+/*
 $(function(){
     $('#container').on("changed.jstree", function (e, data) {
         //console.log(data.instance.get_selected(true)[0].text);
@@ -63,13 +63,18 @@ $(function(){
             //});
             
             DEFAULT_URL = data.instance.get_selected(true)[0].text;
-            
+            //DEFAULT_URL = "https://files.obmcse.xyr/connectors/php/filemanager.php?path=%2FTest%2Faccount.png&mode=getimage&time=1491153990223";
+
         }
         else {
             $('#openFileButton').prop('disabled', true);
+
         }
     });
 });
+*/
+
+
 
 //show file browser moadal
 $(function(){
@@ -82,6 +87,7 @@ $(function(){
 //open pdf file
 $(function(){
     $('#openFileButton').click(function(){
+        console.log("ddd");
         console.log('openning ' + DEFAULT_URL);
         /*//PDFViewerApplication is an object defined in viewer.js
         //PDFViewerApplication.open('/web/compressed.tracemonkey-pldi-09.pdf');
@@ -147,7 +153,7 @@ function setupPDFRendering(url, callback){
     // header on that server.
     //
     //var url = "http://localhost:9002/files/"+url;
-    var url = location.protocol+"//"+location.host+"/files/"+url;
+    var url = url;
 
     pdfDoc = null;
     pageNum = 1;
@@ -160,7 +166,12 @@ function setupPDFRendering(url, callback){
     /**
      * Asynchronously downloads PDF.
      */
-    PDFJS.getDocument(url).then(function (pdfDoc_) {
+    var params = {
+        url: url,
+        withCredentials: true
+    };
+
+    PDFJS.getDocument(params).then(function (pdfDoc_) {
         pdfDoc = pdfDoc_;
         document.getElementById('page_count').textContent = pdfDoc.numPages;
         callback();
