@@ -17,7 +17,7 @@ var socket = io.connect('/');
 //to sync scrolling pdf
 var prevPos=0;
 var scrollSyncThreshold = 50;//number of pixels scrolled to trigger sync
-
+/*
 $(function() {
     $('#container').jstree({
         'core' : {
