@@ -221,7 +221,12 @@ $(function(){
         //PDFViewerApplication is an object defined in viewer.js
         //PDFViewerApplication.open('/web/compressed.tracemonkey-pldi-09.pdf');
         $('#fileBrowserModal').modal('hide');
-        PDFViewerApplication.open('/user_files/batch-12-Module-CS2036/'+DEFAULT_URL);
+        var params = {
+            url: DEFAULT_URL,
+            withCredentials: true
+        };
+        //PDFJS.getDocument(params);
+        PDFViewerApplication.open(DEFAULT_URL);
         var documentViewer = $('#documentViewer');
         if (documentViewer.css('visibility') == 'hidden') {
             documentViewer.css('visibility', 'visible');
