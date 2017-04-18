@@ -131,3 +131,9 @@ var jsonConverter = function (data,url){
     return obj;
 
 }
+$(function () {
+    $('#refresh').on('click',function () {
+        console.log("refresh");
+        $('#container').jstree(true).refresh();
+    });
+});
