@@ -1567,7 +1567,7 @@ var PDFViewerApplication = {
     return promise;
   },
   open: function pdfViewOpen(file, args) {
-    console.log("dsdsdsd");
+
     if (arguments.length > 2 || typeof args === 'number') {
       return Promise.reject(new Error('Call of open() with obsolete signature.'));
     }
@@ -1601,7 +1601,7 @@ var PDFViewerApplication = {
     }
     var self = this;
     self.downloadComplete = false;
-      parameters.withCredentials= true;
+    parameters.withCredentials= true;
     var loadingTask = pdfjsLib.getDocument(parameters);
     this.pdfLoadingTask = loadingTask;
     loadingTask.onPassword = function passwordNeeded(updateCallback, reason) {
@@ -2028,7 +2028,7 @@ var PDFViewerApplication = {
   }
 };
 var validateFileURL;
-var HOSTED_VIEWER_ORIGINS = ['null', 'http://mozilla.github.io', 'https://mozilla.github.io'];
+var HOSTED_VIEWER_ORIGINS = ['null', 'http://mozilla.github.io', 'https://mozilla.github.io','https://files.obmcse.xyr','http://files.obmcse.xyr','https://whiteboard.obmcse.xyr','http://whiteboard.obmcse.xyr'];
 validateFileURL = function validateFileURL(file) {
   try {
     var viewerOrigin = new URL(window.location.href).origin || 'null';
@@ -2176,7 +2176,6 @@ webViewerOpenFileViaURL = function webViewerOpenFileViaURL(file) {
     };
     try {
       xhr.open('GET', file);
-      xhr.withCredentials = true;
       xhr.responseType = 'arraybuffer';
       xhr.send();
     } catch (e) {
@@ -7698,7 +7697,7 @@ exports.ViewHistory = ViewHistory;
 "use strict";
 
 
-var DEFAULT_URL = 'compressed.tracemonkey-pldi-09.pdf';
+var DEFAULT_URL = 'https://files.obmcse.xyr/connectors/php/filemanager.php?mode=download&path=/Maths_Groups.pdf';
 ;
 var pdfjsWebApp;
 {

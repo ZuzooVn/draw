@@ -30,7 +30,7 @@ $(function() {
     };
 //console.log('https://files.obmcse.xyr/connectors/php/filemanager.php?mode=initiate');
     xhttp.open("GET", 'https://files.obmcse.xyr/connectors/php/filemanager.php?mode=initiate', false);
-
+    xhttp.withCredentials = true;
     xhttp.getResponseHeader('Set-Cookie');
     xhttp.send();
 
@@ -98,10 +98,15 @@ function getData (obj,url ,cb){
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200)
         {
-            //console.log(this.response);
 
-            cb.call( obj,
-                jsonConverter((JSON.parse(this.response)).data,url));
+            try {
+                cb.call( obj,
+                    jsonConverter((JSON.parse(this.response)).data,url));
+
+            }
+            catch(err){
+                console.log(this.response);
+            }
 
 
         }
@@ -221,11 +226,6 @@ $(function(){
         //PDFViewerApplication is an object defined in viewer.js
         //PDFViewerApplication.open('/web/compressed.tracemonkey-pldi-09.pdf');
         $('#fileBrowserModal').modal('hide');
-        var params = {
-            url: DEFAULT_URL,
-            withCredentials: true
-        };
-        //PDFJS.getDocument(params);
         PDFViewerApplication.open(DEFAULT_URL);
         var documentViewer = $('#documentViewer');
         if (documentViewer.css('visibility') == 'hidden') {
