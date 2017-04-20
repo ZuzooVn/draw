@@ -387,9 +387,7 @@ var Stepper = (function StepperClosure() {
       this.table.appendChild(chunk);
     },
     getNextBreakPoint: function getNextBreakPoint() {
-      this.breakPoints.sort(function(a, b) {
-        return a - b;
-      });
+      this.breakPoints.sort(function(a, b) { return a - b; });
       for (var i = 0; i < this.breakPoints.length; i++) {
         if (this.breakPoints[i] > this.currentIdx) {
           return this.breakPoints[i];
@@ -405,13 +403,13 @@ var Stepper = (function StepperClosure() {
       var listener = function(e) {
         switch (e.keyCode) {
           case 83: // step
-            dom.removeEventListener('keydown', listener);
+            dom.removeEventListener('keydown', listener, false);
             self.nextBreakPoint = self.currentIdx + 1;
             self.goTo(-1);
             callback();
             break;
           case 67: // continue
-            dom.removeEventListener('keydown', listener);
+            dom.removeEventListener('keydown', listener, false);
             var breakPoint = self.getNextBreakPoint();
             self.nextBreakPoint = breakPoint;
             self.goTo(-1);
@@ -419,7 +417,7 @@ var Stepper = (function StepperClosure() {
             break;
         }
       };
-      dom.addEventListener('keydown', listener);
+      dom.addEventListener('keydown', listener, false);
       self.goTo(idx);
     },
     goTo: function goTo(idx) {
@@ -486,9 +484,7 @@ var Stats = (function Stats() {
       wrapper.appendChild(title);
       wrapper.appendChild(statsDiv);
       stats.push({ pageNumber: pageNumber, div: wrapper });
-      stats.sort(function(a, b) {
-        return a.pageNumber - b.pageNumber;
-      });
+      stats.sort(function(a, b) { return a.pageNumber - b.pageNumber; });
       clear(this.panel);
       for (var i = 0, ii = stats.length; i < ii; ++i) {
         this.panel.appendChild(stats[i].div);
@@ -502,7 +498,7 @@ var Stats = (function Stats() {
 })();
 
 // Manages all the debugging tools.
-window.PDFBug = (function PDFBugClosure() {
+var PDFBug = (function PDFBugClosure() {
   var panelWidth = 300;
   var buttons = [];
   var activePanel = null;
@@ -582,7 +578,7 @@ window.PDFBug = (function PDFBugClosure() {
         } else {
           panel.textContent = tool.name + ' is disabled. To enable add ' +
                               ' "' + tool.id + '" to the pdfBug parameter ' +
-                              'and refresh (separate multiple by commas).';
+                              'and refresh (seperate multiple by commas).';
         }
         buttons.push(panelButton);
       }
