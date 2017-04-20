@@ -19,24 +19,29 @@ var prevPos=0;
 var scrollSyncThreshold = 50;//number of pixels scrolled to trigger sync
 var DEFAULT_URL ='';
 
-$(function() {
+function getDomainName(callback){
+    var hostname = location.host.split('.');
+    var domain = hostname[1]+'.' +hostname[2];
+    console.log(domain);
+    callback(domain,tree);
+}
+
+function init(domain,calback){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             // console.log(this.response);
 
-
+                calback(domain)
         }
     };
 //console.log('https://files.obmcse.xyr/connectors/php/filemanager.php?mode=initiate');
-    xhttp.open("GET", 'https://files.obmcse.xyr/connectors/php/filemanager.php?mode=initiate', false);
+    xhttp.open("GET", 'https://files.'+domain+'/connectors/php/filemanager.php?mode=initiate', true);
     xhttp.withCredentials = true;
     xhttp.getResponseHeader('Set-Cookie');
-    xhttp.send();
-
-});
-
-$(function() {
+    xhttp.send(null);
+}
+function tree (domain) {
 
     $('#container').jstree({
         "core": {
@@ -50,12 +55,12 @@ $(function() {
                 if (node.id === '#') {
                     //	console.log('root');
 
-                    getData(this.parent, 'https://files.obmcse.xyr/connectors/php/filemanager.php?mode=getfolder&path=/', cb);
+                    getData(this.parent, 'https://files.'+domain+'/connectors/php/filemanager.php?mode=getfolder&path=/', cb);
 
                 }
                 else if (node.type === 'folder') {
                     //	console.log(node);
-                    var url = 'https://files.obmcse.xyr/connectors/php/filemanager.php?mode=getfolder&path=' + node.a_attr.href;
+                    var url = 'https://files.'+domain+'/connectors/php/filemanager.php?mode=getfolder&path=' + node.a_attr.href;
 
                     getData(this.parent, url, cb);
 
@@ -82,7 +87,9 @@ $(function() {
             "state", "types", "wholerow"
         ]
     });
-});
+}
+getDomainName(init);
+
 $(function() {
     $('#container').on("changed.jstree", function (e, data) {
 

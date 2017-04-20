@@ -8169,9 +8169,14 @@ var PDFViewerApplication = {
     eventBus.on('fileinputchange', webViewerFileInputChange);
   }
 };
+var name = function(){
+    var hostname = location.host.split('.');
+    return  hostname[1]+'.' +hostname[2];
 
+}
+console.log();
 var HOSTED_VIEWER_ORIGINS = ['null',
-  'http://mozilla.github.io', 'https://mozilla.github.io','https://whiteboard.obmcse.xyr','http://whiteboard.obmcse.xyr','https://files.obmcse.xyr','http://files.obmcse.xyr'];
+  'http://mozilla.github.io', 'https://mozilla.github.io',location.host,'https://files.'+name(),'http://files.'+name()];
 function validateFileURL(file) {
   try {
     var viewerOrigin = new URL(window.location.href).origin || 'null';
