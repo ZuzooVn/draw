@@ -7697,7 +7697,7 @@ exports.ViewHistory = ViewHistory;
 "use strict";
 
 
-var DEFAULT_URL = 'https://files.obmcse.xyr/connectors/php/filemanager.php?mode=download&path=/Maths_Groups.pdf';
+var DEFAULT_URL = '';
 ;
 var pdfjsWebApp;
 {

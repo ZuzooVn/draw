@@ -1082,6 +1082,9 @@ $('#documentLoadTool').on('click', function () {
     var documentViewer = $('#documentViewer');
     var body = $('body');
     //if there is no pdf file selected, open the file browser to select a file
+
+    DEFAULT_URL = ''
+    documentViewer.css('visibility', 'hidden');
     if(DEFAULT_URL == '' || DEFAULT_URL == null){
         $('#fileBrowserModal').modal('show');
     }
